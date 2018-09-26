@@ -1,0 +1,44 @@
+<style lang="less">
+// 样式
+.search{
+     padding: 20rpx;
+        background: #ea4451;
+    .input{
+       width: 100%;
+       background: #fff;
+       height: 60rpx;
+       display: flex;
+    //    垂直居中
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    text{
+        color: #999;
+        margin-left: 10rpx;
+    }
+    }
+}
+</style>
+<template>
+  <view class="search">
+    <view class="input">
+        <!-- icon图标组件 -->
+        <icon type="search" size=14></icon>
+        <text>搜索</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+// Search 在index页面的引入位置要一致！，wepy在components文件下（固定写法）：component
+  export default class Search extends wepy.component {
+    config = {
+      navigationBarTitleText: '搜索'
+    }
+    onLoad() {
+      console.log('onLoad')
+    }
+  }
+</script>

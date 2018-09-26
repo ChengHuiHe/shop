@@ -1,0 +1,29 @@
+<style lang="less">
+// 公共字体 page
+page{
+  font-size : 14px;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index'
+    ],
+    window: {
+      // 设置公共样式
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#ea4451',
+      navigationBarTitleText: 'goShopping',
+      navigationBarTextStyle: 'white'
+    }
+  }
+
+  onLaunch() {
+    console.log('on launch')
+  }
+}
+</script>

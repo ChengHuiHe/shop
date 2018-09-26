@@ -1,0 +1,125 @@
+<style lang="less">
+// 轮播图
+.swiper-item{
+  image{
+  height: 340rpx;
+  width: 750rpx;
+  display: block;
+  }
+}
+// 分类
+.category-wrapper{
+  display: flex;
+  justify-content: space-around;
+  padding: 30rpx 0;
+  .category-item{
+    flex: 1;
+    display: flex;
+    // 垂直居中
+    align-items: center; // 居中对齐弹性盒的各项
+    justify-content: center;// 设置弹性布局的轴
+    flex-direction: column; // 设置弹性布局的方向
+
+    image{
+      width: 100rpx;
+      height: 100rpx;
+      display: block;
+    }
+    text{
+      margin-top: 10rpx;
+    }
+  }
+
+}
+
+// 列的展开项
+
+</style>
+<template>
+  <view class="container">
+    <!--3、 搜索 -->
+    <search></search>
+    <!-- 轮播图 -->
+    <swiper indicator-dots autoplay>
+      <swiper-item  wx:for="{{imgUrlsData}}" wx:key="{{index}}" class="swiper-item">
+        <navigator url="{{item.navigator_url}}"></navigator>
+        <image src="{{item.image_src}}" mode="aspectFill" class="slide-image"></image>
+      </swiper-item>
+    </swiper>
+    <!-- 分类 -->
+    <view class="category-wrapper">
+        <navigator url="{{item.navigator_url}}" wx:for="{{categorys}}" wx:key="{{index}}">
+          <view class="category-item" >
+          <image src="{{item.image_src}}"></image>
+          <text>{{item.name}}</text>
+          </view>
+        </navigator>  
+    </view>
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  // 1、引入外部search 
+  import Search from "../components/search";
+// index
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '首页'
+    }
+    // 4、添加数据源
+    data = {
+      imgUrlsData:[],
+      categorys:[]
+    }
+    onLoad() {
+      console.log('onLoad')
+      // 请求数据 --- 轮播图
+      wx.request({
+        url: "https://www.itjustfun.cn/api/public/v1/home/swiperdata",
+        // 推荐使用箭头函数,因为不会改变this的执行
+        success: (res)=>{
+          console.log(res.data)
+          // 解构出两个结果 ,大括号{}
+          const {data,meta} = res.data
+          // 判断返回状态
+          if (meta.status === 200) {
+            // 赋值
+            this.imgUrlsData = data
+            // 异步请求时才使用,
+            //只要不是在onload加载修改数据，都使用this.$apply()
+            this.$apply()
+          
+          }else{
+            console.log("error")
+          }
+        }
+      })
+      // 请求数据 --- 分类
+      wx.request({
+        url: "https://www.itjustfun.cn/api/public/v1/home/catitems",
+        // 箭头函数接收数据：
+        success:(res)=>{
+          console.log(res.data)
+          // 解构
+          const {data,meta} = res.data
+          // 判断状态
+          if (meta.status === 200) {
+            // 赋值
+            this.categorys = data
+            //
+            this.$apply()
+          }
+        }
+      })
+
+    }
+    //2、 添加 components ，外部引入文件 Search。
+    components = {
+      // 不能添加分号 ;
+      search:Search
+
+    };
+  }
+</script>
