@@ -1,0 +1,34 @@
+<style lang="less">
+    
+</style>
+// 模板
+<template>
+    <!-- 模板 -->
+    <search></search>
+
+</template>
+<script>
+import wepy from 'wepy'
+import Search from "../components/search";
+export default class Category extends wepy.page {
+  config = {
+      // 设置标题，否则就会被全局的覆盖
+      navigationBarTitleText:"分类"
+  }
+
+  data = {
+
+  }
+
+  onLaunch() {
+    console.log('on launch 2222')
+    class amimal{}
+    console.log(typeof amimal)
+  }
+
+  components = {
+      search : Search
+  };
+
+}
+</script>
