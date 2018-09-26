@@ -1,11 +1,67 @@
 <style lang="less">
-    
+    .content{
+        position: fixed;
+        top: 98rpx;
+        bottom: 0;
+        display: flex;
+        width: 750rpx;
+        justify-content: space-between;
+        .left{
+            height: 100%;
+            width: 200rpx;
+            flex-shrink: 0;
+            background: #ebd8d8;
+
+            .category-item{
+                width: 100%;
+                height: 100rpx;
+                line-height: 100rpx;
+                text-align: center;
+                border-bottom: 1px #eeeeee solid;
+                position: relative;
+            }
+            .active {
+                color: red;
+                background: #ffffff;
+                &::after{
+                    display: block;
+                    content: '';
+                    width: 4px;
+                    height: 60rpx;
+                    background: #ff6066;
+                    position: absolute;
+                    left: 0;
+                    top: 20rpx;
+                }
+            }
+        }
+    }
+    // 一定要设置高度
+    .scroll-left{
+        height: 100%;
+    }
 </style>
-// 模板
+
 <template>
+    <view class="container">
     <!-- 模板 -->
     <search></search>
 
+    <view class="content">
+    <!-- 左边 -->
+    <view class="left">
+        <scroll-view scroll-y class="scroll-left">
+            <view class="category-item{{currentTab == index ?'active':''}}" wx:for="{{category}}" wx:key="{{index}}" @tap="handleTab({index})">
+                {{item.cat_name}}
+            </view>
+        </scroll-view>
+    </view>
+    <!-- 右边 -->
+    <view>
+
+    </view>
+</view>
+    </view>
 </template>
 <script>
 import wepy from 'wepy'
@@ -17,18 +73,40 @@ export default class Category extends wepy.page {
   }
 
   data = {
-
+      // 默认是第一项选中
+      currentTab:0,
+      // 右侧的数据
+      category:[],
+      // 当前右侧的数据
+      rightData:{}
   }
 
-  onLaunch() {
-    console.log('on launch 2222')
-    class amimal{}
-    console.log(typeof amimal)
+  onLoad() {
+    // 请求
+    wx.request({
+      url: 'https://www.itjustfun.cn/api/public/v1/categories',
+      success: (res => {
+            console.log(res)
+            // 解构
+            const {data} = res.data;
+            this.category = data;
+            this.rightData = data[0].children;
+            //
+            this.$apply()
+        })
+    })
   }
 
   components = {
       search : Search
   };
+
+  methods = {
+      handleTab:function (index) {
+          // 点击切换右侧的数据
+          this.rightData = this.category[index].children;
+      }
+  }
 
 }
 </script>

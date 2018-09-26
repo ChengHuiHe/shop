@@ -12,7 +12,8 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
-      'pages/category'
+      'pages/category',
+      'pages/search-list'
     ],
     window: {
       // 设置公共样式

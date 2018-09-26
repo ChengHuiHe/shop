@@ -1,79 +1,77 @@
 <style lang="less">
 // 轮播图
-.swiper-item{
-  image{
-  height: 340rpx;
-  width: 750rpx;
-  display: block;
+.swiper-item {
+  image {
+    height: 340rpx;
+    width: 750rpx;
+    display: block;
   }
 }
 // 分类
-.category-wrapper{
+.category-wrapper {
   display: flex;
   justify-content: space-around;
   padding: 30rpx 0;
-  .category-item{
+  .category-item {
     flex: 1;
     display: flex;
     // 垂直居中
     align-items: center; // 居中对齐弹性盒的各项
-    justify-content: center;// 设置弹性布局的轴
+    justify-content: center; // 设置弹性布局的轴
     flex-direction: column; // 设置弹性布局的方向
 
-    image{
+    image {
       width: 100rpx;
       height: 100rpx;
       display: block;
     }
-    text{
+    text {
       margin-top: 10rpx;
     }
   }
-
 }
 
 // 列的展开项
-.wares-column{
-  .column-title{
-    image{
-    display: block;
-    width: 750rpx;
-    height: 59rpx;
+.wares-column {
+  .column-title {
+    image {
+      display: block;
+      width: 750rpx;
+      height: 59rpx;
     }
   }
-  .column-content{
+  .column-content {
     display: flex;
     justify-content: space-between;
     padding: 20rpx;
 
-    .column-left{
+    .column-left {
       // 固定布局大小，方法伸缩性布局防止隔壁的模块过宽导致变形
       flex-shrink: 0;
-      image{
+      image {
         display: block;
         width: 230rpx;
         height: 388rpx;
       }
     }
   }
-  .column-right{
+  .column-right {
     display: flex;
     flex-wrap: wrap;
     flex: 1;
     margin-left: 15rpx;
     justify-content: space-between;
-    image{
+    image {
       display: block;
       width: 200rpx;
       height: 187rpx;
-      }
-      // 选中第一和第4张
-    .ware-item:nth-child(3n-2) image{
+    }
+    // 选中第一和第4张
+    .ware-item:nth-child(3n-2) image {
       width: 260rpx;
     }
   }
 }
-
 </style>
 <template>
   <view class="container">
@@ -81,173 +79,169 @@
     <search></search>
     <!-- 轮播图 -->
     <swiper indicator-dots autoplay>
-      <swiper-item  wx:for="{{imgUrlsData}}" wx:key="{{index}}" class="swiper-item">
+      <swiper-item wx:for="{{imgUrlsData}}" wx:key="{{index}}" class="swiper-item">
         <navigator url="{{item.navigator_url}}"></navigator>
-        <image src="{{item.image_src}}" mode="aspectFill" class="slide-image"></image>
+        <image src="{{item.image_src}}" mode="aspectFill" class="slide-image" />>
       </swiper-item>
     </swiper>
     <!-- 分类 -->
     <view class="category-wrapper">
-        <navigator url="{{item.navigator_url}}" wx:for="{{categorys}}" wx:key="{{index}}">
-          <view class="category-item" >
-          <image src="{{item.image_src}}"></image>
+      <navigator url="{{item.navigator_url}}" wx:for="{{categorys}}" wx:key="{{index}}">
+        <view class="category-item">
+          <image src="{{item.image_src}}" />
           <text>{{item.name}}</text>
-          </view>
-        </navigator>  
+        </view>
+      </navigator>
     </view>
     <!-- 楼 -->
     <view class="wares-column" wx:for="{{floor}}" wx:key="{{index}}">
       <!-- 标题 -->
       <view class="column-title">
-        <image src="{{item.titleImage}}" mode="aspectFill"></image>
+        <image src="{{item.titleImage}}" mode="aspectFill"/>
       </view>
       <!-- 内容 -->
       <view class="column-content">
         <view class="column-left">
           <navigator url="{{item.largeImage.url}}">
-            <image src="{{item.largeImage.src}}"></image>
+            <image src="{{item.largeImage.src}}" />
           </navigator>
-      </view>
-      <!-- 右边 -->
-      <view class="column-right">
-        <view class="ware-item" wx:for="{{item.smallImage}}" wx:for-item="subItem" wx:for-index="subIndex" wx:key="{{subIndex}}">
-            <navigator url="{{subItem.url}}">
-              <image src="{{subItem.src}}"></image>
-            </navigator>
         </view>
-      </view>
+        <!-- 右边 -->
+        <view class="column-right">
+          <view class="ware-item" wx:for="{{item.smallImage}}" wx:for-item="subItem" wx:for-index="subIndex" wx:key="{{subIndex}}">
+            <navigator url="{{subItem.url}}">
+              <image src="{{subItem.src}}" />
+            </navigator>
+          </view>
+        </view>
       </view>
     </view>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
-  // 1、引入外部search 
-  import Search from "../components/search";
+import wepy from 'wepy';
+// 1、引入外部search
+import Search from '../components/search';
 // index
-  export default class Index extends wepy.page {
-    config = {
-      navigationBarTitleText: '首页'
-    }
-    // 4、添加数据源
-    data = {
-      imgUrlsData:[],
-      categorys:[],
-      floor:[
-          // {
-        //   titleImage: "https://img.alicdn.com/tfs/TB1x3nNX6uhSKJjSspmXXcQDpXa-258-52.png",
-        //   largeImage: {
-        //     src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp",
-        //     url: ""
-        //   },
-        //   smallImage: [
-        //     { src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp", url: "" },
-        //     { src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp", url: "" },
-        //     { src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp", url: "" },
-        //     { src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp", url: "" } 
-        //   ]
-        // }
-      ]
-    }
-    onLoad() {
-      console.log('onLoad')
-      // 请求数据 --- 轮播图
-      wx.request({
-        url: "https://www.itjustfun.cn/api/public/v1/home/swiperdata",
-        // 推荐使用箭头函数,因为不会改变this的执行
-        success: (res)=>{
-          console.log(res.data)
-          // 解构出两个结果 ,大括号{}
-          const {data,meta} = res.data
-          // 判断返回状态
-          if (meta.status === 200) {
-            // 赋值
-            this.imgUrlsData = data
-            // 异步请求时才使用,
-            //只要不是在onload加载修改数据，都使用this.$apply()
-            this.$apply()
-          
-          }else{
-            console.log("error")
-          }
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '首页'
+  };
+  // 4、添加数据源
+  data = {
+    imgUrlsData: [],
+    categorys: [],
+    floor: [
+      // {
+      //   titleImage: "https://img.alicdn.com/tfs/TB1x3nNX6uhSKJjSspmXXcQDpXa-258-52.png",
+      //   largeImage: {
+      //     src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp",
+      //     url: ""
+      //   },
+      //   smallImage: [
+      //     { src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp", url: "" },
+      //     { src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp", url: "" },
+      //     { src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp", url: "" },
+      //     { src: "https://img.alicdn.com/bao/uploaded/i1/268927841/TB2qW3doh6I8KJjSszfXXaZVXXa_!!268927841.jpg_400x400q90.jpg_.webp", url: "" }
+      //   ]
+      // }
+    ]
+  };
+  onLoad() {
+    console.log('onLoad');
+    // 请求数据 --- 轮播图
+    wx.request({
+      url: 'https://www.itjustfun.cn/api/public/v1/home/swiperdata',
+      // 推荐使用箭头函数,因为不会改变this的执行
+      success: res => {
+        console.log(res.data);
+        // 解构出两个结果 ,大括号{}
+        const { data, meta } = res.data;
+        // 判断返回状态
+        if (meta.status === 200) {
+          // 赋值
+          this.imgUrlsData = data;
+          // 异步请求时才使用,
+          //只要不是在onload加载修改数据，都使用this.$apply()
+          this.$apply();
+        } else {
+          console.log('error');
         }
-      })
-      // 请求数据 --- 分类
-      wx.request({
-        url: "https://www.itjustfun.cn/api/public/v1/home/catitems",
-        // 箭头函数接收数据：
-        success:(res)=>{
-          // console.log(res.data)
-          // 解构
-          const {data,meta} = res.data
-          // 判断状态
-          if (meta.status === 200) {
-            // 赋值
-            this.categorys = data
-            //
-            this.$apply()
-          }
+      }
+    });
+    // 请求数据 --- 分类
+    wx.request({
+      url: 'https://www.itjustfun.cn/api/public/v1/home/catitems',
+      // 箭头函数接收数据：
+      success: res => {
+        // console.log(res.data)
+        // 解构
+        const { data, meta } = res.data;
+        // 判断状态
+        if (meta.status === 200) {
+          // 赋值
+          this.categorys = data;
+          //
+          this.$apply();
         }
-      })
+      }
+    });
 
-      //楼
-     wx.request({
-        url: "https://www.itjustfun.cn/api/public/v1/home/floordata",
-        // 箭头函数接收数据
-        success: (res)=>{
-          // console.log(res.data)
-          // 解构
-          const {data,meta} = res.data;
-          if (meta.status === 200) {
-            // map 映射
-            // 通过循环剩下的4项赋值给 item.smallImage
-            const newData = data.map((v, i)=>{
-              // console.log(newData)
-              // 后台的数据不符合，需要处理
-              // 变成floor格式
-              let item = {
-                // 获取头部的图片
-                titleImage:v.floor_title.image_src,
-                // 左侧的大图，后台 product_list 的第一项 作为大图
-                largeImage:{
-                  src: v.product_list[0].image_src,
-                  url: v.product_list[0].navigator_url
-                },
-                // 左侧的4个小图
-                smallImage:[]
-              }
+    //楼
+    wx.request({
+      url: 'https://www.itjustfun.cn/api/public/v1/home/floordata',
+      // 箭头函数接收数据
+      success: res => {
+        // console.log(res.data)
+        // 解构
+        const { data, meta } = res.data;
+        if (meta.status === 200) {
+          // map 映射
+          // 通过循环剩下的4项赋值给 item.smallImage
+          const newData = data.map((v, i) => {
+            // console.log(newData)
+            // 后台的数据不符合，需要处理
+            // 变成floor格式
+            let item = {
+              // 获取头部的图片
+              titleImage: v.floor_title.image_src,
+              // 左侧的大图，后台 product_list 的第一项 作为大图
+              largeImage: {
+                src: v.product_list[0].image_src,
+                url: v.product_list[0].navigator_url
+              },
+              // 左侧的4个小图
+              smallImage: []
+            };
 
-              // 第一项数据已经用来当做大图渲染
-              v.product_list.shift();
-              const smallArray = v.product_list;
-              // 通过循环剩余的4 项赋值给 item.smallImage
-              item.smallImage = smallArray.map(val=>{
-                // 返回4个小图数据
-                return {
-                  src:val.image_src,
-                  url:val.navigator_url
-                }
-              })
-              // 返回 整个大的map返回的数据
-              return item
-            })
-            // 赋值
-            this.floor = newData;
-            this.$apply()
-
-          } else{
-            console.log("失败")
-          }
+            // 第一项数据已经用来当做大图渲染所以删除第一项
+            v.product_list.shift();
+            const smallArray = v.product_list;
+            // 通过循环剩余的4 项赋值给 item.smallImage
+            item.smallImage = smallArray.map(val => {
+              // 返回4个小图数据
+              return {
+                src: val.image_src,
+                url: val.navigator_url
+              };
+            });
+            // 返回 整个大的map返回的数据
+            return item;
+          });
+          // 赋值
+          this.floor = newData;
+          this.$apply();
+        } else {
+          console.log('失败');
         }
-      })
-
-    }
-    //2、 添加 components ，外部引入文件 Search。
-    components = {
-      // 不能添加分号 ;
-      search:Search
-
-    };
+      }
+    });
   }
+  //2、 添加 components ，外部引入文件 Search。
+  components = {
+    // 不能添加分号 ;
+    search: Search
+  };
+}
 </script>
